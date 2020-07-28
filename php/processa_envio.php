@@ -20,12 +20,12 @@
 
     //print_r($mensagem); 
     if($mensagem->mensagemValida())
-        enviaEmail();
+        enviaEmail($mensagem);
     else
         echo 'Mensagem inválida';
 
 
-    function enviaEmail(){
+    function enviaEmail($mensagem){
         $mail = new PHPMailer(true);
         try {
             //Server settings
@@ -40,7 +40,7 @@
 
             //Recipients
             $mail->setFrom('raphael989898@outlook.com', 'Web Completo - Remetente');
-            $mail->addAddress('mathewvicente@gmail.com', 'Web Completo - Destinatário');     // Add a recipient
+            $mail->addAddress($mensagem->__get('para'));     // Add a recipient
             //$mail->addReplyTo('raphael989898@outlook.com', 'Web Completo - Destinatário para resposta');
             //$mail->addCC('cc@example.com');
             //$mail->addBCC('bcc@example.com');
@@ -51,9 +51,9 @@
 
             //Content
             $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Abra esse email';
-            $mail->Body    = 'To mandadando email por php mulieke hehehe';
-            $mail->AltBody = 'To mandadando email por php mulieke hehehe';
+            $mail->Subject = $mensagem->__get('assunto');
+            $mail->Body    = $mensagem->__get('mensagem');
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
             echo 'Messagem enviada com sucesso';
